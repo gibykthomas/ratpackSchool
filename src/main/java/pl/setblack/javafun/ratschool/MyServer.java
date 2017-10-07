@@ -50,12 +50,10 @@ public class MyServer {
     }
 
     private void inc(Context ctx) {
-        sleep();
         ctx.render(String.valueOf(cnt.addAndGet(1)));
     }
 
     private void dec(Context ctx) {
-        sleep();
         ctx.render(String.valueOf(cnt.addAndGet(-1)));
     }
 
