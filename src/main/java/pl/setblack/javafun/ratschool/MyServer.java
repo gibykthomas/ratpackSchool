@@ -1,17 +1,15 @@
 package pl.setblack.javafun.ratschool;
 
+import ratpack.exec.Promise;
 import ratpack.handling.Context;
+import ratpack.http.client.HttpClient;
 import ratpack.server.RatpackServer;
 import ratpack.server.ServerConfigBuilder;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class MyServer {
-
-    private final AtomicLong cnt = new AtomicLong(0);
-
-
-
 
     public static void main(String[] args) throws Exception {
        new MyServer().start();
@@ -25,16 +23,30 @@ public class MyServer {
                         .serverConfig(
                                 this::config)
                         .handlers(chain -> chain
-                                .prefix("add", add ->add
-                                        .get(":n", this::add)
+                                .prefix("fibb", add ->add
+                                        .get(":n", this::fibb)
                                 )
-                                .prefix("counter", counter ->
-                                        counter
-                                                .post("inc", this::inc)
-                                                .post("dec", this::dec)
-                                )
+
                         )
         );
+    }
+
+    private void fibb(Context context) throws URISyntaxException {
+        final long n = Long.parseLong(context.getPathTokens().get("n"));
+       // System.out.println("called for:" + n);
+        if ( n < 2) {
+            context.render("1");
+        } else {
+            HttpClient httpClient = context.get(HttpClient.class);
+            Promise<Long> fibb1 = httpClient.get(new URI("http://localhost:8080/fibb/" + (n - 1)))
+                    .map(response -> Long.parseLong(response.getBody().getText())).fork();
+            Promise<Long> fibb2 = httpClient.get(new URI("http://localhost:8080/fibb/" + (n - 2)))
+                    .map(response -> Long.parseLong(response.getBody().getText())).fork();
+            Promise<Long> result = fibb1.flatMap( n1 -> fibb2.map( n2-> n1+n2));
+
+            context.render(result.map(String::valueOf));
+        }
+
     }
 
     private ServerConfigBuilder config(ServerConfigBuilder cfg) {
@@ -44,18 +56,7 @@ public class MyServer {
                 .threads(1);
     }
 
-    private void add(Context ctx) {
-        final long n = Long.parseLong(ctx.getPathTokens().get("n"));
-        ctx.render(String.valueOf(n+1));
-    }
 
-    private void inc(Context ctx) {
-        ctx.render(String.valueOf(cnt.addAndGet(1)));
-    }
-
-    private void dec(Context ctx) {
-        ctx.render(String.valueOf(cnt.addAndGet(-1)));
-    }
 
     private void sleep() {
         try {
