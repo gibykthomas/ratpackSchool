@@ -4,7 +4,7 @@
 - never satisfied with code, bugs and tstability
 - tried scala and WOW!
 
-## Principles
+## principles
 - minimize magic: reflection, thread local, proxies,
 - favor compile check over runtime
 - immutability
@@ -31,6 +31,21 @@ webpage ratpack.io
 
 ## starting ratpack
 https://ratpack.io/manual/current/launching.html
+
+## test
+curl localhost:5050/webinar
+
+# routing
+prefix
+gets 
+post
+
+# config
+
+# non blocking
+
+#testing
+
 
 
 
