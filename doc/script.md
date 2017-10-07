@@ -42,6 +42,10 @@ post
 
 # config
 
+- threads
+
+ab -p README.md -n 10 -c 5 http://localhost:8080/counter/inc
+
 # non blocking
 
 #testing
