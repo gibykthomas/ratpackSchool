@@ -48,6 +48,8 @@ ab -m POST  -n 1000 -c 50 http://localhost:8080/counter/inc
 
 # non blocking
 
+ab  -n 100 -c 5 http://localhost:8080/fibb/10
+
 #testing
 
 
