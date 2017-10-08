@@ -56,6 +56,23 @@ Junit5
 
 #JSON & DB
 
+## DB
+h2
+```
+CREATE TABLE lifelog (
+    id BIGINT NOT NULL,
+    points BIGINT NOT NULL,
+    info VARCHAR NOT NULL,
+    aTime TIMESTAMP NOT NULL,
+    PRIMARY KEY (id)
+);
+
+create sequence lifelog_id;
+```
+curl -H "Content-type: application/json" -d '{"info":"ok", "points":2 }' http://localhost:8080/life
+curl  http://localhost:8080/life
+
+## gradle JOOQ Mapping
 
 #Packaging
 
