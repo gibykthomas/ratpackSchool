@@ -52,6 +52,16 @@ ab  -n 100 -c 5 http://localhost:8080/fibb/10
 
 #testing
 
+Junit5
+
+#JSON & DB
+
+
+#Packaging
+
+
+
+
 
 
 

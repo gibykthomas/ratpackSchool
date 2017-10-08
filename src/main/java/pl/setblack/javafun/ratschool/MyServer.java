@@ -15,10 +15,8 @@ public class MyServer {
        new MyServer().start();
     }
 
-
-
-    private void start() throws Exception{
-        RatpackServer.start(server ->
+    RatpackServer start() throws Exception{
+        return RatpackServer.start(server ->
                 server
                         .serverConfig(
                                 this::config)
@@ -26,7 +24,6 @@ public class MyServer {
                                 .prefix("fibb", add ->add
                                         .get(":n", this::fibb)
                                 )
-
                         )
         );
     }
